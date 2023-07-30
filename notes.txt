@@ -1,0 +1,13 @@
+
+setup
+
+https://www.mockaroo.com/
+
+
+DB Servers
+    serverHost
+    creds: { username , password, accesssToken }
+    dbName
+    tableName
+    coloumnsToSearch
+    dbServerType (MongoDB, PostgreSQL)

@@ -1,0 +1,36 @@
+services:
+  mongo:
+    image: mongo
+    ports:
+      - 27018:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    expose:
+      - 27018
+  mysql:
+    image: mysql
+    ports:
+      - 3306:3306
+      - 33060:33060
+    expose:
+      - 3306
+      - 33060
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_PASSWORD=password
+  adminer:
+    image: adminer
+    ports:
+      - 8089:8080
+    links:
+      - mongo:mongo
+      - mysql:mysql
+      - postgres:postgres
