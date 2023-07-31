@@ -14,8 +14,7 @@ import {
   ListItemText,
   Popover,
   Typography,
-  styled,
-  useTheme
+  styled
 } from '@mui/material';
 
 import InboxTwoToneIcon from '@mui/icons-material/InboxTwoTone';
@@ -61,11 +60,10 @@ const UserBoxDescription = styled(Typography)(
 
 function HeaderUserbox() {
   const user = {
-    name: 'Super Master',
-    avatar: '/static/images/avatars/3.jpg',
-    jobtitle: 'Administrator'
+    name: 'Catherine Pike',
+    avatar: '/static/images/avatars/1.jpg',
+    jobtitle: 'Project Manager'
   };
-  const theme = useTheme();
 
   const ref = useRef(null);
   const [isOpen, setOpen] = useState(false);
@@ -81,7 +79,7 @@ function HeaderUserbox() {
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" sx={{bgcolor: theme.colors.primary.main }}  alt={user.name}>SM</Avatar>
+        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
         <Hidden mdDown>
           <UserBoxText>
             <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
@@ -108,7 +106,7 @@ function HeaderUserbox() {
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" sx={{bgcolor: theme.colors.primary.main}} alt={user.name}>SM</Avatar>
+          <Avatar variant="rounded" alt={user.name} src={user.avatar} />
           <UserBoxText>
             <UserBoxLabel variant="body1">{user.name}</UserBoxLabel>
             <UserBoxDescription variant="body2">
