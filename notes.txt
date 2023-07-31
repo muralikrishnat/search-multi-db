@@ -11,3 +11,6 @@ DB Servers
     tableName
     coloumnsToSearch
     dbServerType (MongoDB, PostgreSQL)
+
+
+pnpm

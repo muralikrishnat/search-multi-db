@@ -37,7 +37,7 @@ const LogoSign = styled(Box)(
         top: 3px;
         left: 17px;
 
-        &:after,
+        &:after, 
         &:before {
             content: "";
             display: block;
@@ -98,7 +98,7 @@ function Logo() {
 
   return (
     <TooltipWrapper
-      title="TA Performance Dashboard"
+      title="Tokyo Free White React Javascript Admin Dashboard"
       arrow
     >
       <LogoWrapper to="/overview">

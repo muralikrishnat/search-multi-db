@@ -6,7 +6,7 @@ import { StylesProvider } from '@mui/styles';
 export const ThemeContext = React.createContext();
 
 const ThemeProviderWrapper = function (props) {
-  const curThemeName = localStorage.getItem('appTheme') || 'GreyGooseTheme';
+  const curThemeName = localStorage.getItem('appTheme') || 'PureLightTheme';
   const [themeName, _setThemeName] = useState(curThemeName);
   const theme = themeCreator(themeName);
   const setThemeName = (themeName) => {

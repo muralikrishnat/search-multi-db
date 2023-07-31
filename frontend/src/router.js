@@ -3,7 +3,6 @@ import { Navigate } from 'react-router-dom';
 
 import SidebarLayout from 'src/layouts/SidebarLayout';
 import BaseLayout from 'src/layouts/BaseLayout';
-import AccentHeaderLayout from './layouts/AccentHeaderLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
 
@@ -16,7 +15,7 @@ const Loader = (Component) => (props) =>
 
 // Pages
 
-const Overview = Loader(lazy(() => import('src/content/login')));
+const Overview = Loader(lazy(() => import('src/content/overview')));
 
 // Dashboards
 
@@ -122,7 +121,7 @@ const routes = [
   },
   {
     path: 'dashboards',
-    element: <AccentHeaderLayout />,
+    element: <SidebarLayout />,
     children: [
       {
         path: '',
