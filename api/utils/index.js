@@ -1,4 +1,46 @@
 import { ObjectId } from 'mongodb';
+const jwtKey = 'sdfafjsdfisdf8sdfsdlfhdsfiu7dsfsdfsdfdsfsdfsdfsd9fsdfsdf8sdf0';
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import configs from '../configs.js';
+const algorithm = 'aes-256-ctr';
+const secretKey = crypto.createHash('sha256').update(String(jwtKey)).digest('base64').substring(0, 32);
+const iv = crypto.randomBytes(16);
+const encrypt = (text) => {
+    const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
+    const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
+    return {
+        iv: iv.toString('hex'),
+        content: encrypted.toString('hex')
+    };
+};
+const decrypt = (hash) => {
+    const decipher = crypto.createDecipheriv(algorithm, secretKey, Buffer.from(hash.iv, 'hex'));
+    const decrpyted = Buffer.concat([decipher.update(Buffer.from(hash.content, 'hex')), decipher.final()]);
+    return decrpyted.toString();
+};
+
+const jwtEncryption = (dataToEncrypt, expirationInMinutes) => {
+    // let jwtData = encrypt(JSON.stringify(dataToEncrypt));
+    let jwtData = dataToEncrypt;
+    return jwt.sign(jwtData, jwtKey, {
+        algorithm: 'HS384',
+        expiresIn: (expirationInMinutes || configs.NO_OF_MINUTES) * 60
+    });
+};
+const jwtDecryption = (dataToDecrypt) => {
+    let decryptedData = null;
+
+    try {
+        let payload = jwt.verify(dataToDecrypt, jwtKey);
+        // let decryptedText = decrypt(payload);
+        // decryptedData = JSON.parse(decryptedText);
+        decryptedData = payload;
+    } catch (e) {
+        // console.log('decrypt error: ', e);
+    }
+    return decryptedData;
+}
 const sendResponseWithHeaders = (req, res, { onlyHeaders = false, status, contentType, contentSize, data, error }) => {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, OPTIONS, DELETE');
@@ -20,6 +62,10 @@ const sendResponseWithHeaders = (req, res, { onlyHeaders = false, status, conten
     }
 };
 const utils = {
+    encrypt,
+    decrypt,
+    jwtEncryption,
+    jwtDecryption,
     methods: {
         async get(args) {
             let {
@@ -46,6 +92,7 @@ const utils = {
                 let updateData = { ...itemToAdd };
                 delete updateData.id;
                 updateData['updatedAt'] = new Date();
+                updateData['updatedBy'] = req.userid;
                 let updateResp = await dbCollection.updateOne({ _id: itemToAdd.id }, {
                     $set: {
                         ...updateData
@@ -56,14 +103,26 @@ const utils = {
                     data: updateResp
                 });
             } else {
-                itemToAdd['createdAt'] = new Date();
-                let insertResp = await dbCollection.insertOne(itemToAdd);
-                return sendResponseWithHeaders(req, res, {
-                    status: 200,
-                    data: insertResp
-                });
+                if(itemToAdd.items) {
+                    itemToAdd.items.forEach(item => {
+                        item['createdAt'] = new Date();
+                        item['createdBy'] = req.userid;
+                    });
+                    let insertResp = await dbCollection.insertMany(itemToAdd.items);
+                    return sendResponseWithHeaders(req, res, {
+                        status: 200,
+                        data: insertResp
+                    });
+                } else {
+                    itemToAdd['createdAt'] = new Date();
+                    itemToAdd['createdBy'] = req.userid;
+                    let insertResp = await dbCollection.insertOne(itemToAdd);
+                    return sendResponseWithHeaders(req, res, {
+                        status: 200,
+                        data: insertResp
+                    });
+                }
             }
-
         },
         async delete(args) {
             let {

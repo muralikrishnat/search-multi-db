@@ -14,3 +14,6 @@ DB Servers
 
 
 pnpm
+
+docker run --name multi-db-postgres -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres
+docker run --name multi-db-mongo -e MONGO_INITDB_ROOT_USERNAME=root -e MONGO_INITDB_ROOT_PASSWORD=password -d -p 27017:27017 mongo

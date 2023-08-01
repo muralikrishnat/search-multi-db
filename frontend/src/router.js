@@ -14,7 +14,7 @@ const Loader = (Component) => (props) =>
   );
 
 // Pages
-
+const Login = Loader(lazy(() => import('src/content/login')));
 const Overview = Loader(lazy(() => import('src/content/overview')));
 
 // Dashboards
@@ -81,12 +81,12 @@ const routes = [
     element: <BaseLayout />,
     children: [
       {
-        path: '/',
-        element: <Overview />
+        path: 'login',
+        element: <Login />
       },
       {
         path: 'overview',
-        element: <Navigate to="/" replace />
+        element: <Navigate to="/" />
       },
       {
         path: 'status',
@@ -168,52 +168,6 @@ const routes = [
       }
     ]
   },
-  {
-    path: '/components',
-    element: <SidebarLayout />,
-    children: [
-      {
-        path: '',
-        element: <Navigate to="buttons" replace />
-      },
-      {
-        path: 'buttons',
-        element: <Buttons />
-      },
-      {
-        path: 'modals',
-        element: <Modals />
-      },
-      {
-        path: 'accordions',
-        element: <Accordions />
-      },
-      {
-        path: 'tabs',
-        element: <Tabs />
-      },
-      {
-        path: 'badges',
-        element: <Badges />
-      },
-      {
-        path: 'tooltips',
-        element: <Tooltips />
-      },
-      {
-        path: 'avatars',
-        element: <Avatars />
-      },
-      {
-        path: 'cards',
-        element: <Cards />
-      },
-      {
-        path: 'forms',
-        element: <Forms />
-      }
-    ]
-  }
 ];
 
 export default routes;

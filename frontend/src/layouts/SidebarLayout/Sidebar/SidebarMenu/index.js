@@ -291,7 +291,15 @@ function SidebarMenu() {
             </List>
           </SubMenuWrapper>
         </List>
-        <List
+        
+      </MenuWrapper>
+    </>
+  );
+}
+
+export default SidebarMenu;
+
+{/* <List
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
@@ -459,10 +467,4 @@ function SidebarMenu() {
               </ListItem>
             </List>
           </SubMenuWrapper>
-        </List>
-      </MenuWrapper>
-    </>
-  );
-}
-
-export default SidebarMenu;
+        </List> */}
